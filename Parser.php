@@ -1,15 +1,24 @@
 <?php
-$filename = 'AMIBOX.xml';
+/*загрузка с интернета
+$url='https://fishki.ua/bitrix/catalog_export/AMIBOX.xml';
+$xml=file_get_contents($url);
+//$xml=simplexml_load_file($url);
+$doc = new DOMDocument();
+//$doc->loadXML($xml);
+$doc->save($xml);
+*/
 
-if (file_exists($filename)) {
-    $xml = simplexml_load_file($filename);
-    //print_r($xml);
-	echo "File $filename exist <br/>";
-	//check_category($xml);
-	check_offers($xml);
-} else {
-    exit("Failed to open $filename");
-}
+/*Проверка подключения файла*/
+//$filename = 'AMIBOX.xml'
+//if (file_exists($filename)) {
+//    $xml = simplexml_load_file($filename);
+//    //print_r($xml);
+//	echo "File $filename exist <br/>";
+//	//check_category($xml);
+//	//check_offers($xml);
+//} else {
+//    exit("Failed to open $filename");
+//}
 
 /*Проверка наличия категории*/
 function check_category($xml){
@@ -41,7 +50,7 @@ function check_category($xml){
 	}
 }
 
-/*Проверка товара*/
+/*Проверка наличия товара*/
 function check_offers($xml){
 	//echo "Check offers OK";
 	//$search_offer = 11111; //нет
@@ -62,7 +71,7 @@ function check_offers($xml){
 		} else {
 			$res = 1;
 			echo $res.'<br/>';
-			/*Товара нет, добавить его в базу*/
+			/*Товара нет, добавить его в базу установить стоимость и количество на складе*/
 		}
 	}
 //	echo '<pre/>';
