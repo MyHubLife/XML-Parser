@@ -2,27 +2,43 @@
 /*загрузка с интернета
 $url='https://fishki.ua/bitrix/catalog_export/AMIBOX.xml';
 $xml=file_get_contents($url);
-//$xml=simplexml_load_file($url);
+$xml=simplexml_load_file($url);
 $doc = new DOMDocument();
-//$doc->loadXML($xml);
+$doc->loadXML($xml);
 $doc->save($xml);
 */
 
 /*Проверка подключения файла*/
-//$filename = 'AMIBOX.xml'
-//if (file_exists($filename)) {
-//    $xml = simplexml_load_file($filename);
-//    //print_r($xml);
-//	echo "File $filename exist <br/>";
-//	//check_category($xml);
-//	//check_offers($xml);
-//} else {
-//    exit("Failed to open $filename");
-//}
+$filename = 'AMIBOX.xml';
+if (file_exists($filename)) {
+    $xml = simplexml_load_file($filename);
+    //print_r($xml);
+	echo "File $filename exist <br/>";
+	//check_category($xml);
+	//check_offers($xml);
+} else {
+    exit("Failed to open $filename");
+	/*вывод ошибки чтения файла*/
+}
+/*Форма поиска значений*/
+echo '<form method="POST" action="">
+		<input type="text" name="search_category" value="Insert category"/>
+		<input type="submit" name="check_category_buttom" value="Поиск категории по названию"/>
+		<br/>
+		<br/>
+		<input type="text" name="search_offer" value="Insert article"/>
+		<input type="submit" name="check_offer_buttom" value="Поиск товара по артиклю"/>
+	  </form>';
+
+if (isset($_POST['check_category_buttom'])){
+	check_category($xml);
+}else if (isset($_POST['check_offer_buttom'])){
+	check_offers($xml);
+}
 
 /*Проверка наличия категории*/
 function check_category($xml){
-	$search_category = "Моноподы"; //Моноподы
+	$search_category = $_POST['search_category']; //Моноподы Ip-камеры Держатели
 	$result = 2;
 	
 	foreach ($xml->shop->categories->category as $category_param){
@@ -43,7 +59,8 @@ function check_category($xml){
 	}
 	
 	if ($result == 1){
-		echo "Добавим в базу $search_category<br/>";
+		echo "Добавим в базу $search_category?<br/>";
+		/*Добавление решения о добавлении категории, если да то добавляем запрос в базу данных*/
 		sql_query_insert_category($search_category);
 	} else {
 		echo "Категория $search_category существует в базе";
